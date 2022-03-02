@@ -125,14 +125,13 @@ app.post('/favorite-songs/:id', async (req, res) => {
     const favorite = new favoriteSongs({
         songName,
         artist,
-        album,
-        favoriteId
+        album
     })
 
     try {
         await favorite.save()
 
-        res.status(201).json({"favoriteId":req.params.favoriteId,"songName":req.body.songName,"artist":req.body.artist,"album":req.body.album})
+        res.status(201).json({"id":req.params.id,"songName":req.body.songName,"artist":req.body.artist,"album":req.body.album})
         
     }catch(error){
         console.log(error)
@@ -140,7 +139,11 @@ app.post('/favorite-songs/:id', async (req, res) => {
     }
 })
 
-app.get('/')
+app.get('/favorite-songs/id', async (req, res) => {
+    res.status(200).json(req.body)
+
+})
+
 
 
 //Credenciais
