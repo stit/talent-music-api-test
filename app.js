@@ -144,6 +144,12 @@ app.get('/favorite-songs/id', async (req, res) => {
 
 })
 
+app.put('/favorite-songs/:favoriteId', (req, res) => {
+    const favoriteId = req.body.favoriteId
+    id[req.params.id] = favoriteId
+    return res.status(200).json(id[req.params.id])
+})
+
 
 
 //Credenciais
