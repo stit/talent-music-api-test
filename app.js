@@ -11,6 +11,8 @@ app.use(express.json())
 
 const User = require('./models/User')
 
+const favoriteSongs = require('./models/favorite-songs')
+
 //Rota Publica
 app.get('/', (req, res) => {
     res.status(200).json({ msg: 'Bem vindo a nossa API'})
@@ -101,6 +103,44 @@ app.post('/auth/login', async (req, res) => {
         res.status(500).json({msg: 'Erro no servidor'})
     }
 })
+
+//Adiciona Musicas
+
+app.post('/favorite-songs/:id', async (req, res) => {
+
+    const {songName, artist, album, favoriteId} = req.body
+    const id = req.params.id
+
+    if(!songName) {
+        return res.status(422).json({ msg: 'o email é obrigatorio!'})
+    }
+    if(!artist) {
+        return res.status(422).json({ msg: 'a senha é obrigatorio!'})
+    }
+    if(!album) {
+        return res.status(422).json({ msg: 'o email é obrigatorio!'})
+    }
+
+    //adiciona
+    const favorite = new favoriteSongs({
+        songName,
+        artist,
+        album,
+        favoriteId
+    })
+
+    try {
+        await favorite.save()
+
+        res.status(201).json({"favoriteId":req.params.favoriteId,"songName":req.body.songName,"artist":req.body.artist,"album":req.body.album})
+        
+    }catch(error){
+        console.log(error)
+        res.status(500).json({msg: 'Erro no servidor'})
+    }
+})
+
+app.get('/')
 
 
 //Credenciais
